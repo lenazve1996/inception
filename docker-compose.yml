@@ -1,0 +1,35 @@
+services:
+  nginx:
+    image: nginx:0.0.9
+    container_name: nginx
+    tty: true
+    ports:
+      - 8889:80
+      - 8890:443
+    depends_on:
+      - mariadb
+    networks:
+      inception: 
+        ipv4_address: 171.22.0.2
+
+  mariadb:
+    image: mariadb:0.0.6
+    container_name: mariadb
+    tty: true
+    ports:
+      - 3306:3306
+    volumes: 
+      - data:/var/lib/docker/mariadb_volume
+    networks:
+      inception:
+        ipv4_address: 171.22.0.3
+
+volumes:
+    data: {}
+
+networks:
+  inception:
+    ipam:
+      driver: default
+      config:
+        - subnet: "171.22.0.1/16"
