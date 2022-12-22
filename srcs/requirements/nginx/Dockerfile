@@ -1,9 +1,13 @@
 FROM debian:buster
 
-RUN apt update
-RUN apt install nginx -y
-RUN apt install openssl -y
-RUN apt install vim netcat curl net-tools -y
+RUN apt update && \
+    apt install -y \
+    vim \
+    netcat \
+    curl \
+    net-tools \
+    openssl \
+    nginx 
 
 RUN openssl req -x509 -nodes -days 365 \
     -newkey rsa:2048 -keyout \
@@ -17,6 +21,4 @@ RUN chmod 777 /etc/ssl/private/nginx-selfsigned.key
 COPY ./conf/nginx.conf /etc/nginx/sites-available/default
 
 CMD [ "nginx", "-g", "daemon off;" ]
-
-# ENTRYPOINT service nginx restart && /bin/bash
 

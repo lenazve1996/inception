@@ -1,22 +1,25 @@
 #!/bin/bash
 
 if [ ! -d "/var/www/html/wordpress/wp-admin" ]; then
+    # mkdir -p /var/www/html/wordpress
+    # chmod -R 775 /var/www/html/wordpress
+    # chown www-data:www-data /var/www/html/wordpress -R
 
     cd /var/www/html/wordpress
     wp core download --locale=en_GB  --allow-root
 
-    wp config create --dbname=wordpress --dbuser=$MARIADB_USER \
-        --dbpass=$MARIADB_PASS --allow-root --dbhost=mariadb
+    wp config create --dbname=wordpress --dbuser=user \
+        --dbpass=pass --allow-root --dbhost=171.22.0.2
 
     wp config set WP_REDIS_HOST "redis" --allow-root
 
-    wp core install --url=$DOMAIN_NAME \
-        --title="Wordpress" --admin_name=$ADMIN_USER \
-        --admin_password=$ADMIN_PASS --allow-root \
-        --admin_email=$ADMIN_USER@example.com
+    wp core install --url=ayajirob.42.fr \
+        --title="Wordpress" --admin_name=ayajirob \
+        --admin_password=pass --allow-root \
+        --admin_email=ayajirob@example.com
 
-    wp user create user $USER@example.com --role=editor \
-        --user_pass=$USER_PASS --allow-root
+    wp user create user user@example.com --role=editor \
+        --user_pass=pass --allow-root
 
     wp theme install blockmag --allow-root
 

@@ -1,12 +1,13 @@
 FROM debian:buster
 
-RUN apt update
-RUN apt install -y  wget \
-                    vim \
-                    netcat \
-                    curl \
-                    net-tools \
-                    vsftpd
+RUN apt update && \
+    apt install -y \
+    wget \
+    vim \
+    netcat \
+    curl \
+    net-tools \
+    vsftpd
 
 COPY ./conf/vsftpd.conf /etc/vsftpd.conf 
 COPY ./tools/init.sh /root/scripts/init.sh

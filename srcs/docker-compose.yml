@@ -6,7 +6,7 @@ services:
     ports:
       - 3306:3306
     volumes: 
-      - mariadb:/var/lib/docker/mariadb_volume
+      - mariadb:/var/lib/mysql
     networks:
       inception:
         ipv4_address: 171.22.0.2
@@ -15,7 +15,6 @@ services:
   wordpress:
     build: ./requirements/wordpress
     image: wordpress
-    # tty: true
     container_name: wordpress
     env_file:
       - .env
@@ -33,7 +32,6 @@ services:
   nginx:
     build: ./requirements/nginx
     image: nginx
-    # tty: true
     container_name: nginx
     ports:
       - 443:443
