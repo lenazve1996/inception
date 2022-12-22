@@ -1,0 +1,157 @@
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    image: mariadb
+    container_name: mariadb
+    ports:
+      - 3306:3306
+    volumes: 
+      - mariadb:/var/lib/docker/mariadb_volume
+    networks:
+      inception:
+        ipv4_address: 171.22.0.2
+    restart: unless-stopped
+
+  wordpress:
+    build: ./requirements/wordpress
+    image: wordpress
+    # tty: true
+    container_name: wordpress
+    env_file:
+      - .env
+    ports:
+      - 9000:9000
+    depends_on:
+      - mariadb
+    volumes: 
+      - wordpress:/var/www/html/wordpress
+    networks:
+      inception:
+        ipv4_address: 171.22.0.3
+    restart: unless-stopped
+
+  nginx:
+    build: ./requirements/nginx
+    image: nginx
+    # tty: true
+    container_name: nginx
+    ports:
+      - 443:443
+    depends_on:
+      - wordpress
+    volumes: 
+      - wordpress:/var/www/html/wordpress
+    networks:
+      inception:
+        ipv4_address: 171.22.0.4
+    restart: unless-stopped
+
+  redis:
+    build: ./requirements/redis
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    depends_on:
+      - mariadb
+      - wordpress
+    networks:
+      inception:
+        ipv4_address: 171.22.0.5
+    restart: unless-stopped
+
+  website:
+    build: ./requirements/website
+    image: website
+    container_name: website
+    ports:
+      - 9007:9007
+      - 9100:9100
+    networks:
+      inception:
+        ipv4_address: 171.22.0.6
+    restart: unless-stopped
+
+  ftp_server:
+    build: ./requirements/ftp_server
+    image: ftp_server
+    container_name: ftp_server
+    env_file:
+      - .env
+    ports:
+      - 21:21
+    volumes:
+      - wordpress:/var/www/html/wordpress
+    networks:
+      inception:
+        ipv4_address: 171.22.0.10
+    restart: unless-stopped
+
+  adminer:
+    build: ./requirements/adminer
+    image: adminer
+    container_name: adminer
+    ports:
+      - 9008:80
+    depends_on:
+      - mariadb
+      - wordpress
+      - nginx
+    networks:
+      inception:
+        ipv4_address: 171.22.0.7
+    restart: unless-stopped
+
+  cadvisor:
+    build: ./requirements/cadvisor
+    image: cadvisor
+    container_name: cadvisor
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    networks:
+      inception:
+        ipv4_address: 171.22.0.9
+    restart: unless-stopped
+
+
+  prometheus:
+    build: ./requirements/prometheus
+    image: prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    depends_on:
+      - cadvisor
+    networks:
+      inception:
+        ipv4_address: 171.22.0.8
+    restart: unless-stopped
+
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/ayajirob/Desktop/study/inception/volumes/mariadb
+
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/ayajirob/Desktop/study/inception/volumes/wordpress
+
+
+networks:
+  inception:
+    ipam:
+      driver: default
+      config:
+        - subnet: "171.22.0.1/16"

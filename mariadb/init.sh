@@ -1,7 +1,0 @@
-#!/bin/bash
-
-mysql -u root << SQL_QUERY
-    CREATE USER '$MARIADB_USER'@'localhost' IDENTIFIED BY '$MARIADB_PASS';
-    GRANT ALL PRIVILEGES ON *.* TO '$MARIADB_USER'@'localhost';
-    FLUSH PRIVILEGES;
-SQL_QUERY
