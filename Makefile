@@ -2,10 +2,10 @@ dependencies:
 	bash install_deps.sh
 
 all : 			
-	docker-compose -f srcs/docker-compose.yml up -d
+	docker compose -f srcs/docker-compose.yml up -d
 
 clean : 		
-	docker-compose -f srcs/docker-compose.yml down
+	docker compose -f srcs/docker-compose.yml down
 
 fclean : 		clean
 	rm -rf volumes/wordpress/*
