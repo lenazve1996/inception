@@ -1,6 +1,5 @@
-dependencies:	
-	mkdir -p volumes/mariadb
-	mkdir -p volumes/wordpress
+dependencies:
+	bash install_deps.sh
 
 all : 			
 	docker-compose -f srcs/docker-compose.yml up -d
