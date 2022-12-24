@@ -137,14 +137,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/ayajirob/mariadb
+      device: /home/ayajirob/data/mariadb
 
   wordpress:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/ayajirob/wordpress
+      device: /home/ayajirob/data/wordpress
 
 
 networks:
