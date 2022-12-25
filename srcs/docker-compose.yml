@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   redis:
-    build: ./requirements/redis
+    build: ./requirements/bonus/redis
     image: redis
     container_name: redis
     ports:
@@ -59,7 +59,7 @@ services:
     restart: unless-stopped
 
   website:
-    build: ./requirements/website
+    build: ./requirements/bonus/website
     image: website
     container_name: website
     ports:
@@ -70,23 +70,8 @@ services:
         ipv4_address: 171.22.0.6
     restart: unless-stopped
 
-  ftp_server:
-    build: ./requirements/ftp_server
-    image: ftp_server
-    container_name: ftp_server
-    env_file:
-      - .env
-    ports:
-      - 21:21
-    volumes:
-      - wordpress:/var/www/html/wordpress
-    networks:
-      inception:
-        ipv4_address: 171.22.0.10
-    restart: unless-stopped
-
   adminer:
-    build: ./requirements/adminer
+    build: ./requirements/bonus/adminer
     image: adminer
     container_name: adminer
     ports:
@@ -101,7 +86,7 @@ services:
     restart: unless-stopped
 
   cadvisor:
-    build: ./requirements/cadvisor
+    build: ./requirements/bonus/cadvisor
     image: cadvisor
     container_name: cadvisor
     ports:
@@ -119,7 +104,7 @@ services:
 
 
   prometheus:
-    build: ./requirements/prometheus
+    build: ./requirements/bonus/prometheus
     image: prometheus
     container_name: prometheus
     ports:
