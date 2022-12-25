@@ -10,3 +10,4 @@ mysql -u root << SQL_QUERY
     FLUSH PRIVILEGES;
 SQL_QUERY
 
+service mysql stop
