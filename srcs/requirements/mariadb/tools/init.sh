@@ -9,5 +9,3 @@ mysql -u root << SQL_QUERY
     ALTER USER 'root'@'localhost' IDENTIFIED BY "pass";
     FLUSH PRIVILEGES;
 SQL_QUERY
-
-service mysql stop
