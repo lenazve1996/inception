@@ -14,7 +14,6 @@ fclean : 		clean
 	rm -rf /home/ayajirob/data
 
 
-
 re : 			fclean all
 
 .PHONY: 		all clean fclean re
